@@ -1,0 +1,329 @@
+
+
+// Objetos - Variables
+
+let  autoincremento = -1
+
+const correcto = {
+    id_correo:autoincremento,
+    email:'',
+    asunto:'',
+    mensaje:'',
+    fecha: 'Por determinar'
+}
+
+
+
+// Selectores
+const campo_email = document.querySelector('#email')
+const campo_asunto = document.querySelector('#asunto')
+const  campo_mensaje = document.querySelector('#mensaje')
+
+const formulario = document.querySelector('#formulario')
+const info_campos = []
+const boton_submit = document.querySelector('#formulario button[type="submit"]')
+const boton_reset = document.querySelector('#formulario button[type="reset"]')
+const spinner = document.querySelector('#spinner')
+
+
+// Selectores de historial
+
+
+
+// Funciones
+
+const recuperar_id_historial = () => {
+
+    if ((localStorage.getItem('historial')) !== null) {
+        const almacen =JSON.parse(localStorage.getItem('historial'))
+        autoincremento = (almacen[almacen.length-1]).id_correo
+    }
+    else {
+        autoincremento = -1
+    }
+
+}
+
+const activar_spinner=(e)=>{
+    e.preventDefault()
+    spinner.classList.remove('hidden')
+    setTimeout(()=>{
+        spinner.classList.add('hidden')
+        resetear_formulario()
+
+        // creamos un mensaje de toodo se ha enviado ok
+        const mensaje_ok = document.createElement('p')
+        mensaje_ok.classList.add('ok','bg-green-500', 'text-white', 'text-center', 'rounded-lg', 'mt-10', 'text-sm')
+        mensaje_ok.textContent='Enviado con exito'
+        formulario.appendChild(mensaje_ok)
+
+        setTimeout(()=>{
+            mensaje_ok.remove()
+        }, 1500)
+
+    }, 1500)
+
+}
+
+const resetear_formulario=()=>{
+    correcto.email=''
+    correcto.asunto=''
+    correcto.mensaje=''
+    formulario.reset()
+}
+
+const recuperar_campos = () =>{
+    if (localStorage.getItem('campos')){
+        const campos_recuperados = JSON.parse(localStorage.getItem('campos'))
+        if (campos_recuperados.length > 0) {
+
+        }
+    }
+}
+
+const habilitar_boton = () =>{
+    if (
+        campo_email.textContent.trim().length!==0
+        && campo_mensaje.textContent.trim().length!==0
+        && campo_asunto.textContent.trim().length!==0
+    ){
+        boton_submit.removeAttribute('disabled')
+    }
+}
+
+
+const almacenar_campos = () =>{
+    const campos_a_almacenar = JSON.stringify(info_campos)
+}
+
+
+const validar = (e) =>{
+    if (e.target.value.trim()===''){
+        mostrar_error(`Campo ${e.target.id} es obligatorio`, e.target.parentElement)
+        correcto[e.target.id] = ''
+        return
+    }
+  if (e.target.id==='email' && !validar_email(e.target.value)) {
+      mostrar_error('Email no válido', e.target.parentElement)
+      correcto[e.target.id] = ''
+      return
+  }
+
+  limpiar_alerta(e.target.parentElement)
+    correcto[e.target.id] = e.target.value.trim().toLowerCase()
+    comprobar_objeto(correcto)
+}
+
+const comprobar_objeto=() =>{
+     const values = Object.values(correcto)
+    if (values.includes('')){
+        boton_submit.classList.add('opacity-50')
+        boton_submit.disabled= true
+        return
+    }
+    boton_submit.classList.remove('opacity-50')
+    boton_submit.disabled= false
+
+}
+
+const limpiar_alerta = (referencia) => {
+    const alerta = referencia.querySelector('.alerta')
+    if (alerta) {
+        alerta.remove()
+    }
+}
+const mostrar_error=(error, referencia)=>{
+
+    limpiar_alerta(referencia)
+    const parrafo_error = document.createElement('p')
+    parrafo_error.textContent = error
+    //le añadimos estas clases ya creadas en css menos alerta que la añado yo
+    parrafo_error.classList.add('alerta','bg-red-600', 'text-center', 'text-white', 'p-2')
+    referencia.appendChild(parrafo_error)
+}
+
+const validar_email = (email) =>{
+    const regex_email = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+    return email.match(regex_email)
+}
+
+const recuperar_localStorage = (clave) =>{
+    let almacen
+
+    if (localStorage.getItem(clave)===null){
+        almacen =[]
+    }
+    else {
+        almacen =JSON.parse(localStorage.getItem(clave))
+    }
+    return almacen
+}
+
+const almacenar_localStorage = (clave, objeto_email) => {
+    let almacen = recuperar_localStorage(clave)
+
+    if (almacen=== null){
+        almacen= []
+        return almacen
+    }
+
+    almacen.push(objeto_email)
+    console.log(almacen)
+    localStorage.setItem('historial', JSON.stringify(almacen))
+}
+
+const mostrar_historial = ()  => {
+    const tabla_historial = document.querySelector('table')
+    const historial = recuperar_localStorage('historial')
+    for (const correo of historial){
+        const fila  =document.createElement('tr')
+        const destinatario = document.createElement('td')
+        const asunto = document.createElement('td')
+        const fecha = document.createElement('td')
+        const boton_eliminar_correo = document.createElement('button')
+
+        boton_eliminar_correo.id = correo.id_correo
+        fila.classList.add('fila_boton')
+        destinatario.textContent = correo.email
+        asunto.textContent = correo.asunto
+        boton_eliminar_correo.textContent = 'Eliminar'
+        boton_eliminar_correo.classList.add('funciones')
+        fecha.textContent = correo.fecha
+
+        tabla_historial.appendChild(fila)
+        fila.appendChild(destinatario)
+        fila.appendChild(asunto)
+        fila.appendChild(fecha)
+        fila.appendChild(boton_eliminar_correo)
+
+        fila.addEventListener('click', (e) => {
+            e.preventDefault()
+            e.stopPropagation()
+            lanzar_modal_email(correo)
+        })
+        boton_eliminar_correo.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const id_boton = e.target.id
+            eliminar_correo( id_boton, 'historial')
+            limpiar_html(tabla_historial)
+            mostrar_historial()
+        })
+    }
+}
+
+// Página hace referencia a si estamos en historial / borradores
+const eliminar_correo = (id_correo, pagina) => {
+    console.log('entra en eliminar')
+    const lista_correos = JSON.parse(localStorage.getItem(pagina))
+    console.log(lista_correos)
+    const lista_correo_actualizada = lista_correos.filter(function(correo) {
+        console.log(typeof correo.id_correo)
+        console.log(typeof id_correo)
+        return correo.id_correo !== parseInt(id_correo)
+    } )
+    console.log(lista_correo_actualizada)
+    localStorage.setItem(pagina, JSON.stringify(lista_correo_actualizada))
+}
+
+const limpiar_html=(elemento)=>{
+    while (elemento.firstElementChild){
+        elemento.firstElementChild.remove()
+    }
+}
+
+
+const lanzar_modal_email = (correo) => {
+    console.log('entra en lanzar_modal')
+    let modal = document.createElement('section');
+    let contenido_modal = document.createElement('section')
+    let boton_cerrar_modal = document.createElement('button');
+    const cuerpo_mensaje = document.createElement('p')
+    const destinatario_h3 = document.createElement('h6')
+    const asunto_h3 = document.createElement('h6')
+    const fecha_h3 = document.createElement('h6')
+
+    destinatario_h3.classList.add('modal-encabezados')
+    asunto_h3.classList.add('modal-encabezados')
+    fecha_h3.classList.add('modal-encabezados')
+
+
+    destinatario_h3.textContent = correo.email
+    asunto_h3.textContent = correo.asunto
+    fecha_h3.textContent = correo.fecha
+
+    cuerpo_mensaje.textContent = correo.mensaje
+
+
+    modal.appendChild(contenido_modal)
+    contenido_modal.appendChild(destinatario_h3)
+    contenido_modal.appendChild(asunto_h3)
+    contenido_modal.appendChild(fecha_h3)
+    contenido_modal.appendChild(cuerpo_mensaje)
+    contenido_modal.appendChild(boton_cerrar_modal)
+
+    document.body.appendChild(modal)
+
+    modal.id = 'modal_email'
+    contenido_modal.id = 'contenido_modal'
+    boton_cerrar_modal.id = 'boton_cerrar_modal'
+
+
+    boton_cerrar_modal.addEventListener('click', (e) => {
+        e.preventDefault()
+        modal.style.display = 'none';
+    });
+
+    // Para que también cierre al hacer click fuera del modal
+    window.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+}
+
+
+// Eventos - Listeners
+
+// Eventos de Index
+
+if (window.location.pathname.includes('index.html')) {
+
+    window.addEventListener('DOMContentLoaded', () =>{
+        recuperar_id_historial()
+    })
+
+    campo_email.addEventListener('input', validar)
+    campo_asunto.addEventListener('input', validar)
+    campo_mensaje.addEventListener('input', validar)
+
+    window.addEventListener('beforeunload', ()=>{
+        almacenar_campos()
+    })
+
+    boton_submit.addEventListener('click', (e)=>{
+        autoincremento++
+        correcto.id_correo = autoincremento
+        correcto.fecha = moment().format('Do MMM Y h:mm')
+        almacenar_localStorage('historial', correcto)
+        activar_spinner(e)
+
+    })
+    boton_reset.addEventListener('click', (e)=>{
+        e.preventDefault()
+        resetear_formulario()
+        comprobar_objeto() //deshabilita el botoón enviar
+        console.log(correcto)
+        const alertas_mostradas=document.querySelectorAll('.alerta')
+
+        for (let i=0; i<alertas_mostradas.length;i++){
+            alertas_mostradas[i].remove()
+        }
+
+    })
+}
+
+// Eventos de Historial
+
+if (window.location.pathname.includes('historial.html')) {
+    mostrar_historial()
+}
