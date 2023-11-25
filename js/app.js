@@ -1,4 +1,5 @@
 
+// Import
 
 // Objetos - Variables
 
@@ -13,7 +14,6 @@ const correcto = {
 }
 
 
-
 // Selectores
 const campo_email = document.querySelector('#email')
 const campo_asunto = document.querySelector('#asunto')
@@ -26,6 +26,7 @@ const boton_reset = document.querySelector('#formulario button[type="reset"]')
 const spinner = document.querySelector('#spinner')
 const zona_arrastre = document.querySelector('#drop_zone')
 const frase_arrastre = document.querySelector('.frase_arrastre')
+
 
 
 // Selectores de historial
@@ -326,6 +327,17 @@ const restaurar_color_original = () => {
     zona_arrastre.style.backgroundColor = ''
 }
 
+const enviar_email_emailjs = ( ) => {
+    let params = {
+        destinatario: campo_email.value,
+        asunto: campo_asunto.value,
+        mensaje: campo_mensaje.value
+    }
+    emailjs.send("service_6v2caxk","template_4g7o4xh", params)
+}
+
+
+
 // Eventos - Listeners
 
 // Eventos de Index
@@ -350,8 +362,12 @@ if (window.location.pathname.includes('index.html')) {
         correcto.fecha = moment().format('Do MMM Y h:mm')
         almacenar_localStorage('historial', correcto)
         activar_spinner(e)
+        enviar_email_emailjs()
 
     })
+
+
+
     boton_reset.addEventListener('click', (e)=>{
         e.preventDefault()
         resetear_formulario()
