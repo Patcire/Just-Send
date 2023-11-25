@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Envio de Emails</title>
     <link rel="stylesheet" href="dist/app.css">
+    <link rel="stylesheet" href="dist/extra.css">
 </head>
 <body class="min-h-screen bg-slate-300">
 <div class="md:flex min-h-screen md:align-top">
@@ -40,6 +41,9 @@
                 <div class="flex flex-col space-y-2">
                     <label for="mensaje" class="font-regular font-medium">Mensaje:</label>
                     <textarea id="mensaje" type="text" name="mensaje" placeholder="Mensaje de Email" class="border border-gray-300 px-3 py-2 rounded-lg h-36"></textarea>
+                </div>
+                <div class="flex flex-col space-y-2" id="drop_zone">
+                    <p class="frase_arrastre">Arrastra y suelta uno o más archivos a esta zona ...</p>
                 </div>
 
                 <div id="botones" class="flex gap-5">

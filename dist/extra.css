@@ -59,3 +59,19 @@
 .modal-encabezados {
     color: #1a202c; !important;
 }
+
+#drop_zone {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    border: 3px dashed rgba(0, 255, 119, 0.74);
+    //border-style: ;
+    width: 610px;
+    height: 100px;
+}
+
+.nombre_archivo {
+    font-family: "Book Antiqua";
+    font-weight: bold;
+}

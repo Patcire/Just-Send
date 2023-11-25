@@ -24,11 +24,11 @@ const info_campos = []
 const boton_submit = document.querySelector('#formulario button[type="submit"]')
 const boton_reset = document.querySelector('#formulario button[type="reset"]')
 const spinner = document.querySelector('#spinner')
+const zona_arrastre = document.querySelector('#drop_zone')
+const frase_arrastre = document.querySelector('.frase_arrastre')
 
 
 // Selectores de historial
-
-
 
 // Funciones
 
@@ -281,6 +281,50 @@ const lanzar_modal_email = (correo) => {
     });
 }
 
+const soltar = (e) => {
+    console.log("Fichero(s) arrastrados");
+
+    // Evitamos el comportamiendo por defecto (que el fichero se abra/ejecute)
+    e.preventDefault();
+    if (e.dataTransfer.items) {
+        for (let i = 0 ; i < e.dataTransfer.items.length; i++) {
+            if (e.dataTransfer.items[i].kind === 'file') {
+                const file = e.dataTransfer.items[i].getAsFile()
+                const nombre_archivo = document.createElement('p')
+                nombre_archivo.textContent = file.name
+                nombre_archivo.classList.add('nombre_archivo')
+                e.target.appendChild(nombre_archivo)
+                console.log(file.name)
+            }
+        }
+    }
+    else {
+        console.log('No se ha podido almacenar')
+    }
+    eliminar_arrastrado(e)
+}
+
+
+const  prevenir_default_arrastrar = (e) => {
+    e.preventDefault()
+}
+
+const eliminar_arrastrado = (e) => {
+    if (e.dataTransfer.items) {
+        e.dataTransfer.items.clear()
+    }
+    else  {
+        e.dataTransfer.clearData()
+    }
+}
+
+const cambiar_color = () => {
+    zona_arrastre.style.backgroundColor = 'darkseagreen'
+}
+
+const restaurar_color_original = () => {
+    zona_arrastre.style.backgroundColor = ''
+}
 
 // Eventos - Listeners
 
@@ -320,6 +364,21 @@ if (window.location.pathname.includes('index.html')) {
         }
 
     })
+
+    zona_arrastre.addEventListener('drop', (e) => {
+        soltar(e)
+    })
+
+    zona_arrastre.addEventListener('dragover', (e) => {
+        prevenir_default_arrastrar(e)
+        frase_arrastre.style.display = 'none'
+    })
+
+    zona_arrastre.addEventListener('dragenter', cambiar_color)
+    zona_arrastre.addEventListener('dragleave', (e) => {
+        restaurar_color_original()
+    })
+
 }
 
 // Eventos de Historial
