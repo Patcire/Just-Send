@@ -11,7 +11,7 @@
 0 - PROBAR LA WEB
 =
 
-> Web desplegada --> https://aesthetic-halva-381262.netlify.app/
+> Web desplegada --> https://frabjous-banoffee-655cb5.netlify.app/ (no funciona bien)
 
 
 > * **Probar en local**: ¡IMPORTANTE! Manuel, para
