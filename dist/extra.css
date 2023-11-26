@@ -42,8 +42,8 @@
     float: right;
     font-size: 23px;
     font-weight: bold;
-    background-color: rgb(214, 188, 250);
-    border-color: #3c366b;
+    background-color: rgb(218, 174, 209);
+    border-color: rgba(0, 255, 119, 0.15);
     border: solid #000;
     border-style: solid;
 }
@@ -57,7 +57,7 @@
 
 
 .fila_boton:hover {
-    background-color: darkseagreen;
+    background-color: #6b9da1;
     cursor: pointer;
 }
 
@@ -85,4 +85,65 @@
 .cuerpo_mensaje_modal {
     font-family: "Arial Narrow";
     color: #742a2a;
+}
+
+.head_historial {
+    background: linear-gradient(#6b9da1, rgba(237,242,247,var(--bg-opacity)));
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.titulo {
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 47px;
+    font-weight: bold;
+    letter-spacing: -1px; line-height: 1;
+}
+
+.subtitulo {
+    font-family: 'Helvetica Neue', sans-serif;
+    color: beige;
+    font-size: 22px;
+    font-weight: revert;
+    letter-spacing: -1px; line-height: 1;
+    padding-bottom: 20px;
+}
+
+.opcion_ir_enviar {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    height: 20px;
+    width: 200px;
+    position: relative;
+    background-color: transparent;
+    cursor: pointer;
+    border: 2px solid #252525;
+    overflow: hidden;
+    border-radius: 30px;
+    color: #333;
+}
+.opcion_ir_enviar:hover {
+    background-color: #7c9b9b;
+    font-weight: bold;
+
+}
+
+.historial_titulo {
+    padding-top: 60px;
+    text-align: center;
+    font-size: 20px;
+    justify-content: center;
+    font-family: 'Helvetica Neue', sans-serif;
+    text-decoration: underline ;
+}
+
+.main_historial {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
 }
