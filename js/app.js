@@ -2,9 +2,12 @@
 
 // Objetos - Variables
 
+// Con autoincremento generaremos el id para cada correo
+
 let  autoincremento = -1
 
-const correcto = {
+
+const objeto_email = {
     id_correo:autoincremento,
     email:'',
     asunto:'',
@@ -64,9 +67,9 @@ const activar_spinner=(e)=>{
 }
 
 const resetear_formulario=()=>{
-    correcto.email=''
-    correcto.asunto=''
-    correcto.mensaje=''
+    objeto_email.email=''
+    objeto_email.asunto=''
+    objeto_email.mensaje=''
     formulario.reset()
 }
 
@@ -79,22 +82,22 @@ const almacenar_campos = () =>{
 const validar = (e) =>{
     if (e.target.value.trim()===''){
         mostrar_error(`Campo ${e.target.id} es obligatorio`, e.target.parentElement)
-        correcto[e.target.id] = ''
+        objeto_email[e.target.id] = ''
         return
     }
   if (e.target.id==='email' && !validar_email(e.target.value)) {
       mostrar_error('Email no válido', e.target.parentElement)
-      correcto[e.target.id] = ''
+      objeto_email[e.target.id] = ''
       return
   }
 
   limpiar_alerta(e.target.parentElement)
-    correcto[e.target.id] = e.target.value.trim().toLowerCase()
-    comprobar_objeto(correcto)
+    objeto_email[e.target.id] = e.target.value.trim().toLowerCase()
+    comprobar_objeto(objeto_email)
 }
 
 const comprobar_objeto=() =>{
-     const values = Object.values(correcto)
+     const values = Object.values(objeto_email)
     if (values.includes('')){
         boton_submit.classList.add('opacity-50')
         boton_submit.disabled= true
@@ -213,9 +216,9 @@ const limpiar_html=(elemento)=>{
 
 const lanzar_modal_email = (correo) => {
     console.log('entra en lanzar_modal')
-    let modal = document.createElement('section');
-    let contenido_modal = document.createElement('section')
-    let boton_cerrar_modal = document.createElement('button');
+    const modal = document.createElement('section');
+    const contenido_modal = document.createElement('section')
+    const boton_cerrar_modal = document.createElement('button');
     const cuerpo_mensaje = document.createElement('p')
     const destinatario_h3 = document.createElement('h3')
     const asunto_h3 = document.createElement('h3')
@@ -274,7 +277,7 @@ const soltar = (e) => {
                 nombre_archivo.classList.add('nombre_archivo')
                 e.target.appendChild(nombre_archivo)
                 console.log(file.name)
-                correcto.adjuntos.push(file.name)
+                objeto_email.adjuntos.push(file.name)
             }
         }
     }
@@ -339,9 +342,9 @@ if (window.location.pathname.includes('index.html')) {
 
     boton_submit.addEventListener('click', (e)=>{
         autoincremento++
-        correcto.id_correo = autoincremento
-        correcto.fecha = moment().format('Do MMM Y h:mm a')
-        almacenar_localStorage('historial', correcto)
+        objeto_email.id_correo = autoincremento
+        objeto_email.fecha = moment().format('Do MMM Y h:mm a')
+        almacenar_localStorage('historial', objeto_email)
         activar_spinner(e)
         enviar_email_emailjs()
 
@@ -353,7 +356,7 @@ if (window.location.pathname.includes('index.html')) {
         e.preventDefault()
         resetear_formulario()
         comprobar_objeto() //deshabilita el botoón enviar
-        console.log(correcto)
+        console.log(objeto_email)
         const alertas_mostradas=document.querySelectorAll('.alerta')
 
         for (let i=0; i<alertas_mostradas.length;i++){
