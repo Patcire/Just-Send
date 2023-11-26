@@ -38,10 +38,14 @@
 }
 
 #boton_cerrar_modal {
-    color: #aaa;
+    color: #c03a3a;
     float: right;
-    font-size: 28px;
+    font-size: 23px;
     font-weight: bold;
+    background-color: rgb(214, 188, 250);
+    border-color: #3c366b;
+    border: solid #000;
+    border-style: solid;
 }
 
 #boton_cerrar_modal:hover,
@@ -50,6 +54,7 @@
     text-decoration: none;
     cursor: pointer;
 }
+
 
 .fila_boton:hover {
     background-color: darkseagreen;

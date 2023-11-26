@@ -18,10 +18,10 @@ const objeto_email = {
 
 
 // Selectores
+
 const campo_email = document.querySelector('#email')
 const campo_asunto = document.querySelector('#asunto')
 const  campo_mensaje = document.querySelector('#mensaje')
-
 const formulario = document.querySelector('#formulario')
 const info_campos = []
 const boton_submit = document.querySelector('#formulario button[type="submit"]')
@@ -236,6 +236,7 @@ const lanzar_modal_email = (correo) => {
     fecha_h3.textContent = `Fecha: ${correo.fecha}`
     adjuntos_h3.textContent = `Archivos adjuntos: ${correo.adjuntos}`
     cuerpo_mensaje.textContent = `Mensaje: ${correo.mensaje}`
+    boton_cerrar_modal.textContent = 'Cerrar'
 
 
     modal.appendChild(contenido_modal)
@@ -244,7 +245,7 @@ const lanzar_modal_email = (correo) => {
     contenido_modal.appendChild(fecha_h3)
     contenido_modal.appendChild(cuerpo_mensaje)
     contenido_modal.appendChild(adjuntos_h3)
-    modal.appendChild(boton_cerrar_modal)
+    contenido_modal.appendChild(boton_cerrar_modal)
 
     modal.id = 'modal_email'
     contenido_modal.id = 'contenido_modal'
