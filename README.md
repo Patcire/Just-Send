@@ -11,17 +11,17 @@
 0 - PROBAR LA WEB
 =
 
-App desplegada -->
-=
+> Web desplegada --> https://aesthetic-halva-381262.netlify.app/
 
-> * Probar en local: ¡IMPORTANTE! Manuel, Para
+
+> * **Probar en local**: ¡IMPORTANTE! Manuel, para
 > no exponer mi token de manera pública 
 > usé un archivo .js que luego
 > metí en el gitignore. En el 
 > comentario de la entrega te he dejado el
-> lo que debes copiar y pegar en el archivo que tiens que crear:
-> *token_emailjs.js*, debe ir en la carpeta principal
-> * del proyecto.
+> lo que debes copiar y pegar en el archivo js "*token_emailjs.js*" que tienes que crear y que
+> debe ir en la carpeta principal
+> del proyecto.
 
 ***
 1- Just Send: Introducción
@@ -33,6 +33,7 @@ En mi caso, he escogido el proyecto mail, ya que era
 el que más me llamaba la atención, pues las funcionalidades
 que se le podían añadir eran bastante distintas al resto
 de proyectos.
+![historial](/recursos/Captura.JPG)
 ***
 2 - Nuevas funcionalidades implementadas
 =
