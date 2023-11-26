@@ -1,5 +1,4 @@
 
-// Import
 
 // Objetos - Variables
 
@@ -10,7 +9,8 @@ const correcto = {
     email:'',
     asunto:'',
     mensaje:'',
-    fecha: 'Por determinar'
+    fecha: 'Por determinar',
+    adjuntos: []
 }
 
 
@@ -27,9 +27,6 @@ const spinner = document.querySelector('#spinner')
 const zona_arrastre = document.querySelector('#drop_zone')
 const frase_arrastre = document.querySelector('.frase_arrastre')
 
-
-
-// Selectores de historial
 
 // Funciones
 
@@ -71,25 +68,6 @@ const resetear_formulario=()=>{
     correcto.asunto=''
     correcto.mensaje=''
     formulario.reset()
-}
-
-const recuperar_campos = () =>{
-    if (localStorage.getItem('campos')){
-        const campos_recuperados = JSON.parse(localStorage.getItem('campos'))
-        if (campos_recuperados.length > 0) {
-
-        }
-    }
-}
-
-const habilitar_boton = () =>{
-    if (
-        campo_email.textContent.trim().length!==0
-        && campo_mensaje.textContent.trim().length!==0
-        && campo_asunto.textContent.trim().length!==0
-    ){
-        boton_submit.removeAttribute('disabled')
-    }
 }
 
 
@@ -239,20 +217,22 @@ const lanzar_modal_email = (correo) => {
     let contenido_modal = document.createElement('section')
     let boton_cerrar_modal = document.createElement('button');
     const cuerpo_mensaje = document.createElement('p')
-    const destinatario_h3 = document.createElement('h6')
-    const asunto_h3 = document.createElement('h6')
-    const fecha_h3 = document.createElement('h6')
+    const destinatario_h3 = document.createElement('h3')
+    const asunto_h3 = document.createElement('h3')
+    const fecha_h3 = document.createElement('h3')
+    const adjuntos_h3 = document.createElement('h3')
 
     destinatario_h3.classList.add('modal-encabezados')
     asunto_h3.classList.add('modal-encabezados')
     fecha_h3.classList.add('modal-encabezados')
+    adjuntos_h3.classList.add('modal-encabezados')
+    cuerpo_mensaje.classList.add('cuerpo_mensaje_modal')
 
-
-    destinatario_h3.textContent = correo.email
-    asunto_h3.textContent = correo.asunto
-    fecha_h3.textContent = correo.fecha
-
-    cuerpo_mensaje.textContent = correo.mensaje
+    destinatario_h3.textContent = `Destinatario: ${correo.email}`
+    asunto_h3.textContent = `Asunto: ${correo.asunto}`
+    fecha_h3.textContent = `Fecha: ${correo.fecha}`
+    adjuntos_h3.textContent = `Archivos adjuntos: ${correo.adjuntos}`
+    cuerpo_mensaje.textContent = `Mensaje: ${correo.mensaje}`
 
 
     modal.appendChild(contenido_modal)
@@ -260,14 +240,14 @@ const lanzar_modal_email = (correo) => {
     contenido_modal.appendChild(asunto_h3)
     contenido_modal.appendChild(fecha_h3)
     contenido_modal.appendChild(cuerpo_mensaje)
-    contenido_modal.appendChild(boton_cerrar_modal)
-
-    document.body.appendChild(modal)
+    contenido_modal.appendChild(adjuntos_h3)
+    modal.appendChild(boton_cerrar_modal)
 
     modal.id = 'modal_email'
     contenido_modal.id = 'contenido_modal'
     boton_cerrar_modal.id = 'boton_cerrar_modal'
 
+    document.body.appendChild(modal)
 
     boton_cerrar_modal.addEventListener('click', (e) => {
         e.preventDefault()
@@ -284,8 +264,6 @@ const lanzar_modal_email = (correo) => {
 
 const soltar = (e) => {
     console.log("Fichero(s) arrastrados");
-
-    // Evitamos el comportamiendo por defecto (que el fichero se abra/ejecute)
     e.preventDefault();
     if (e.dataTransfer.items) {
         for (let i = 0 ; i < e.dataTransfer.items.length; i++) {
@@ -296,6 +274,7 @@ const soltar = (e) => {
                 nombre_archivo.classList.add('nombre_archivo')
                 e.target.appendChild(nombre_archivo)
                 console.log(file.name)
+                correcto.adjuntos.push(file.name)
             }
         }
     }
@@ -307,6 +286,8 @@ const soltar = (e) => {
 
 
 const  prevenir_default_arrastrar = (e) => {
+    // por defecto las páginas de los navegadores
+    // si arrastras y sueltas algo lo muestran / carga en la misma ventana
     e.preventDefault()
 }
 
@@ -359,7 +340,7 @@ if (window.location.pathname.includes('index.html')) {
     boton_submit.addEventListener('click', (e)=>{
         autoincremento++
         correcto.id_correo = autoincremento
-        correcto.fecha = moment().format('Do MMM Y h:mm')
+        correcto.fecha = moment().format('Do MMM Y h:mm a')
         almacenar_localStorage('historial', correcto)
         activar_spinner(e)
         enviar_email_emailjs()

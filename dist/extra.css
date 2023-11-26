@@ -57,6 +57,7 @@
 }
 
 .modal-encabezados {
+    font-weight: bold;
     color: #1a202c; !important;
 }
 
@@ -74,4 +75,9 @@
 .nombre_archivo {
     font-family: "Book Antiqua";
     font-weight: bold;
+}
+
+.cuerpo_mensaje_modal {
+    font-family: "Arial Narrow";
+    color: #742a2a;
 }
