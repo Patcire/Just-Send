@@ -42,7 +42,7 @@ de proyectos.
 > Ahora, cuando enviamos un email con nuestro formulario,
 > si vamos a la nueva pestaña de 'Historial', podremos
 > ver una lista de todos los correos que hemos enviado.
-> ![historial](/recursos/2.JPG)
+> ![historial](/recursos/2.jpg)
 > Esto nos muestra el destinatario, el asunto, la fecha
 > a la que se envió y se añade un botón por si queremos
 > eliminar el correo del historial.
