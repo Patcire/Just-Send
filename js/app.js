@@ -193,9 +193,6 @@ const soltar = (e) => {
             }
         }
     }
-    else {
-        console.log('No se ha podido almacenar')
-    }
     eliminar_arrastrado(e)
 }
 
